@@ -1,0 +1,6 @@
+{
+  "name": "Corpus AI - Multi-Agent Governance Platform",
+  "description": "Multi-agent autonomous orchestrator with FSM state guards, policy auditing, and Governance Lab.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

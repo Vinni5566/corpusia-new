@@ -1,0 +1,185 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Cinematic command-center — dark base */
+    --background: 226 45% 5%;
+    --foreground: 210 40% 97%;
+
+    --card: 226 38% 9%;
+    --card-foreground: 210 40% 97%;
+
+    --popover: 226 40% 7%;
+    --popover-foreground: 210 40% 97%;
+
+    --primary: 262 83% 66%;
+    --primary-foreground: 226 45% 5%;
+
+    --secondary: 226 30% 15%;
+    --secondary-foreground: 210 30% 90%;
+
+    --muted: 226 28% 13%;
+    --muted-foreground: 220 15% 62%;
+
+    --accent: 189 94% 55%;
+    --accent-foreground: 226 45% 5%;
+
+    --destructive: 0 72% 55%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 226 25% 18%;
+    --input: 226 25% 16%;
+    --ring: 262 83% 66%;
+
+    --radius: 0.85rem;
+
+    /* Neon accent scale */
+    --glow-violet: 262 83% 66%;
+    --glow-cyan: 189 94% 55%;
+    --glow-pink: 330 81% 62%;
+
+    /* Agent identity colors */
+    --agent-orchestrator: 262 83% 66%;
+    --agent-marketing: 330 81% 62%;
+    --agent-finance: 158 64% 52%;
+    --agent-engineering: 217 91% 63%;
+    --agent-human: 38 92% 55%;
+
+    --success: 158 64% 45%;
+    --warning: 38 92% 55%;
+
+    --sidebar-background: 226 45% 4%;
+    --sidebar-foreground: 220 20% 75%;
+    --sidebar-primary: 262 83% 66%;
+    --sidebar-primary-foreground: 226 45% 5%;
+    --sidebar-accent: 226 30% 12%;
+    --sidebar-accent-foreground: 210 40% 97%;
+    --sidebar-border: 226 25% 15%;
+    --sidebar-ring: 262 83% 66%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+@layer utilities {
+  .font-mono-terminal {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+  }
+
+  .glass-panel {
+    position: relative;
+    isolation: isolate;
+    background: linear-gradient(
+      165deg,
+      hsl(var(--card) / 0.2),
+      hsl(var(--card) / 0.06)
+    ) !important;
+    border: 1px solid hsl(var(--border) / 0.35) !important;
+    backdrop-filter: blur(10px) saturate(150%) !important;
+    -webkit-backdrop-filter: blur(10px) saturate(150%) !important;
+    box-shadow:
+      0 20px 44px -22px rgba(0, 0, 0, 0.6),
+      inset 0 1px 0 0 hsl(var(--foreground) / 0.07) !important;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .glass-panel::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      135deg,
+      hsl(var(--primary) / 0.45),
+      transparent 35%,
+      transparent 65%,
+      hsl(var(--glow-cyan) / 0.35)
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0.55;
+    pointer-events: none;
+  }
+
+  .glass-panel::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    border-radius: inherit;
+    background: linear-gradient(
+      180deg,
+      hsl(var(--foreground) / 0.06),
+      transparent 40%
+    );
+    pointer-events: none;
+  }
+
+  .glass-panel:hover {
+    border-color: hsl(var(--primary) / 0.4) !important;
+  }
+
+  .glow-border-violet {
+    box-shadow: 0 0 0 1px hsl(var(--glow-violet) / 0.25), 0 8px 32px -8px hsl(var(--glow-violet) / 0.25);
+  }
+
+  .glow-border-cyan {
+    box-shadow: 0 0 0 1px hsl(var(--glow-cyan) / 0.25), 0 8px 32px -8px hsl(var(--glow-cyan) / 0.25);
+  }
+
+  .text-glow-violet {
+    text-shadow: 0 0 24px hsl(var(--glow-violet) / 0.5);
+  }
+
+  .scrollbar-thin {
+    scrollbar-width: thin;
+    scrollbar-color: hsl(var(--border)) transparent;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-thumb {
+    background: hsl(var(--border));
+    border-radius: 999px;
+  }
+
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+@layer base {
+  ::selection {
+    background: hsl(var(--primary) / 0.35);
+    color: hsl(var(--foreground));
+  }
+}
