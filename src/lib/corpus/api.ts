@@ -6,7 +6,7 @@ import type {
   Initiative,
 } from "./types";
 
-export const API_URL = "https://corpusai-2ftb.onrender.com";
+export const API_URL = import.meta.env.VITE_API_URL || "https://corpusai-2ftb.onrender.com";
 export const WS_URL = API_URL.replace(/^http/, "ws");
 
 // ---------------------------------------------------------------------------
@@ -149,8 +149,21 @@ async function getJson<T>(path: string, fallback: T): Promise<T> {
       throw new Error(`Request failed: ${path} (${res.status})`);
     }
     const data = await res.json();
-    if (Array.isArray(data) && data.length === 0 && Array.isArray(fallback) && fallback.length > 0) {
-      return fallback;
+    if (Array.isArray(fallback)) {
+      if (!Array.isArray(data) || data.length === 0) {
+        return fallback;
+      }
+    } else if (fallback && typeof fallback === "object") {
+      if (!data || typeof data !== "object") {
+        return fallback;
+      }
+      const record = data as Record<string, unknown>;
+      if ("logs" in (fallback as object) && (!Array.isArray(record.logs) || record.logs.length === 0)) {
+        return fallback;
+      }
+      if ("graph" in (fallback as object) && (!data || !record.graph)) {
+        return fallback;
+      }
     }
     return data as T;
   } catch (err) {

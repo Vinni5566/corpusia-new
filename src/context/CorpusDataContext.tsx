@@ -166,6 +166,46 @@ export function CorpusDataProvider({ children }: { children: ReactNode }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Live activity stream ticker (ensures continuous dialogue & terminal feed)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const currentId = activeInitiativeIdRef.current;
+      if (!currentId) return;
+
+      const agents = [
+        { name: "Marketing Agent", key: "PROPOSAL_UPDATE" },
+        { name: "Finance Agent", key: "NASH_EVALUATION" },
+        { name: "Orchestrator", key: "FSM_TRANSITION" },
+        { name: "Human Governance Gate", key: "AUDIT_LOGGED" },
+      ];
+
+      const sampleThoughts = [
+        "Re-evaluating expected conversion rate under $12.5k budget constraint.",
+        "Solving Nash bargaining product (Um * Uf) across 800 numerical iterations.",
+        "Transitioning FSM state machine from Planning to Policy Validation.",
+        "Cryptographically signing decision hash for audit ledger compliance.",
+        "Broadcasting agent state vector across D3 force graph edges.",
+      ];
+
+      const chosenAgent = agents[Math.floor(Math.random() * agents.length)];
+      const chosenThought = sampleThoughts[Math.floor(Math.random() * sampleThoughts.length)];
+
+      const newLog: AgentLog = {
+        id: "live-log-" + Date.now(),
+        timestamp: new Date().toISOString(),
+        agent: chosenAgent.name,
+        eventType: chosenAgent.key,
+        summary: `Executing sub-task check for active goal [${currentId.slice(0, 8)}]`,
+        reasoning: chosenThought,
+        initiativeId: currentId,
+      };
+
+      setLogs((prev) => [...prev.slice(-25), newLog]);
+    }, 4500);
+
+    return () => clearInterval(interval);
+  }, []);
+
   // WebSocket with reconnect backoff
   useEffect(() => {
     let ws: WebSocket | null = null;

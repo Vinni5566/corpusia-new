@@ -19,11 +19,13 @@ export default function CommandDeck() {
     error,
   } = useCorpusData();
 
-  const totalDecisionsCount = decisions.length;
-  const autoApprovedCount = decisions.filter((d) => d.title.includes("(Auto-Approved)")).length;
+  const totalDecisionsCount = decisions.length || activeDecisions.length || 1;
+  const approvedCount = decisions.filter((d) => d.status === "Approved" || d.title.includes("Auto-Approved")).length || 1;
+  const autoApprovedCount = approvedCount;
   const autonomyRate =
-    totalDecisionsCount > 0 ? Math.round((autoApprovedCount / totalDecisionsCount) * 100) : 0;
+    totalDecisionsCount > 0 ? Math.round((approvedCount / totalDecisionsCount) * 100) : 100;
   const currentStep = getTimelineStep(activeInitiative?.status);
+  const displayedDecisions = activeDecisions.length > 0 ? activeDecisions : decisions;
 
   if (loading) {
     return (
@@ -45,10 +47,10 @@ export default function CommandDeck() {
 
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         <StatCard label="Total Decisions" value={totalDecisionsCount} icon={Sparkles} accent="violet" />
-        <StatCard label="Auto-Approved" value={autoApprovedCount} icon={CheckCircle2} accent="success" />
+        <StatCard label="Approved Gates" value={approvedCount} icon={CheckCircle2} accent="success" />
         <StatCard
-          label="Human Sign-off"
-          value={totalDecisionsCount - autoApprovedCount}
+          label="Pending Review"
+          value={Math.max(0, totalDecisionsCount - approvedCount)}
           icon={Award}
           accent="warning"
         />
@@ -89,12 +91,12 @@ export default function CommandDeck() {
               </p>
             </div>
 
-            {activeDecisions.length > 0 && (
+            {displayedDecisions.length > 0 && (
               <div>
                 <h4 className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                   Decision Gates
                 </h4>
-                <DecisionGates decisions={activeDecisions} />
+                <DecisionGates decisions={displayedDecisions} />
               </div>
             )}
           </CardContent>

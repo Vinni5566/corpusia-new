@@ -6,9 +6,10 @@ import EmptyState from "@/components/corpus/EmptyState";
 import { useCorpusData } from "@/context/CorpusDataContext";
 
 export default function Negotiation() {
-  const { activeInitiative, logs } = useCorpusData();
+  const { activeInitiative, initiatives, logs } = useCorpusData();
+  const currentInitiative = activeInitiative || initiatives[0];
 
-  if (!activeInitiative) {
+  if (!currentInitiative) {
     return (
       <EmptyState
         icon={MessageSquare}
@@ -24,7 +25,7 @@ export default function Negotiation() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-base">
             <MessageSquare size={18} style={{ color: "hsl(var(--glow-pink))" }} />
-            Agent Negotiation Chat
+            Agent Negotiation Chat — {currentInitiative.name}
           </CardTitle>
         </CardHeader>
         <CardContent className="scrollbar-thin max-h-[600px] overflow-y-auto">
@@ -40,7 +41,7 @@ export default function Negotiation() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <ActivityTerminal logs={logs} activeInitiative={activeInitiative} />
+          <ActivityTerminal logs={logs} activeInitiative={currentInitiative} />
         </CardContent>
       </Card>
     </div>

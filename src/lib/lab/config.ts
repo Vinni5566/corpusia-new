@@ -12,8 +12,10 @@
 // `Deno.env` inside `supabase/functions/*/index.ts` — never shipped to the
 // browser.
 
-export const LAB_SUPABASE_URL = "https://asfxsovxjdxjuqevfxsc.supabase.co";
-export const LAB_SUPABASE_ANON_KEY = "sb_publishable_QWCSXRzBe5tWVCL55slmrA_kLuWFIKl";
+export const LAB_SUPABASE_URL =
+  import.meta.env.VITE_SUPABASE_URL || "https://asfxsovxjdxjuqevfxsc.supabase.co";
+export const LAB_SUPABASE_ANON_KEY =
+  import.meta.env.VITE_SUPABASE_ANON_KEY || "sb_publishable_QWCSXRzBe5tWVCL55slmrA_kLuWFIKl";
 
 export const LAB_SUPABASE_CONFIGURED =
   Boolean(LAB_SUPABASE_URL) && Boolean(LAB_SUPABASE_ANON_KEY);

@@ -24,7 +24,7 @@ export default function Analytics() {
         <StatCard label="Total Initiatives" value={analytics.totalInitiatives} icon={Layers} accent="violet" />
         <StatCard
           label="Success Rate"
-          value={`${(analytics.successRate * 100).toFixed(0)}%`}
+          value={`${analytics.successRate > 1 ? analytics.successRate.toFixed(1) : (analytics.successRate * 100).toFixed(1)}%`}
           icon={Percent}
           accent="success"
         />
